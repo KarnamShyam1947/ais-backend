@@ -94,9 +94,9 @@ app.post('/submit-quote', async (req, res) => {
 
         await browser.close();
         console.log('PDF generated successfully.');
-    } catch (error) {
-        console.error('Error generating PDF:', error);
-        return res.status(500).json({ error: 'Error generating PDF' });
+    } catch (e) {
+        console.error('Error generating PDF:', e);
+        return res.status(500).json({ error: 'Error generating PDF', errorMsg: e });
     }
 
     const adminMailContent = getCompiledTemplate('constrution-request.html', { username: "Admin" });
