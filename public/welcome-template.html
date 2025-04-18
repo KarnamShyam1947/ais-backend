@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Attica Infra Services</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .email-wrapper {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .email-header {
+            background-color: #005D73; /* Attica Infra Service Brand Color */
+            padding: 20px;
+            border-radius: 8px 8px 0 0;
+            text-align: center;
+        }
+        .email-header img {
+            width: 120px; /* Logo size */
+        }
+        .email-body {
+            padding: 20px;
+        }
+        .email-body h2 {
+            color: #005D73;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        .email-body p {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .email-footer {
+            background-color: #005D73;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 0 0 8px 8px;
+            margin-top: 20px;
+        }
+        a.button {
+            background-color: #005D73;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+        a.button:hover {
+            background-color: #003d4d;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-wrapper">
+        <!-- Header -->
+        <div class="email-header">
+            <img src="https://res.cloudinary.com/ddm2qblsr/image/upload/v1744511093/full-removebg-preview_evknaa.png" alt="Attica Infra Services Logo">
+            <!-- <img src="images/logo.png" alt="Attica Infra Services Logo"> -->
+        </div>
+
+        <!-- Body -->
+        <div class="email-body">
+            <h2>Welcome to Attica Infra Services!</h2>
+            <p>Dear {{username}},</p>
+            <p>We are thrilled to have you as part of the Attica Infra Services family! We are committed to providing top-notch construction services, and we look forward to partnering with you for all your construction needs.</p>
+            <p>Here’s what you can expect from us:</p>
+            <ul>
+                <li><strong>High-quality service:</strong> We offer a wide range of construction services, all tailored to your needs.</li>
+                <li><strong>Dedicated professionals:</strong> Our team is here to make your projects come to life with precision and care.</li>
+                <li><strong>Timely delivery:</strong> We pride ourselves on delivering projects on schedule and within budget.</li>
+            </ul>
+            <p>If you have any questions or need assistance, feel free to <a href="mailto:muthakana.sekhar@gmail.com">contact us</a>.</p>
+            <p>Thank you for choosing Attica Infra Services!</p>
+            <p>Best regards,<br>The Attica Infra Services Team</p>
+            <a href="https://attica-infra-prototype.onrender.com" class="button">Visit Our Website</a>
+        </div>
+
+        <!-- Footer -->
+        <div class="email-footer">
+            <p>&copy; 2025 Attica Infra Services. All rights reserved.</p>
+            <p>Attica Infra Services, City Name, Country.</p>
+        </div>
+    </div>
+</body>
+</html>
