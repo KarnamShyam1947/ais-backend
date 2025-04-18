@@ -247,6 +247,10 @@ app.post('/submit-quote', async (req, res) => {
     }
 });
 
+app.get("/", (req, res) => {
+    return res.status(200).json({"status" : "UP"})
+})
+
 
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}....`);
