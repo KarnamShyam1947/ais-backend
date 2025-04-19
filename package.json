@@ -17,6 +17,7 @@
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "handlebars": "^4.7.8",
+    "html-pdf-node": "^1.0.8",
     "nodemailer": "^6.10.0",
     "pdfkit": "^0.17.0",
     "puppeteer": "^24.6.1"
