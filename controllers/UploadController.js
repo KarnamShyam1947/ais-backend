@@ -2,8 +2,11 @@ const multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const cloudinary = require("./../config/CloudinaryConfig");
 const { extractPublicIdFromUrl } = require("./../lib/CloudniaryUtils");
+const { v4 } = require('uuid');
+const s3Client = require("../config/S3Client");
+const { PutObjectCommand, DeleteObjectCommand } = require("@aws-sdk/client-s3");
 
-const storage = new CloudinaryStorage({
+const multerCloudinaryStorage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params: {
         folder: 'ais',
@@ -11,10 +14,11 @@ const storage = new CloudinaryStorage({
     }
 });
 
-const upload = multer({ storage });
+const uploadCloudinary = multer({ storage: multerCloudinaryStorage });
+const uploadMemory = multer({ storage: multer.memoryStorage() });
 
-const uploadFile = (req, res) => {
-    // console.log(req);
+const uploadFileCloudinary = (req, res) => {
+    console.log(req.file.path);
 
     if (req.file && req.file.path) {
         res.json({ imageUrl: req.file.path });
@@ -23,7 +27,7 @@ const uploadFile = (req, res) => {
     }
 }
 
-const deleteFile = async (req, res) => {
+const deleteFileCloudinary = async (req, res) => {
     const { url } = req.body;
 
     if (!url) {
@@ -48,8 +52,55 @@ const deleteFile = async (req, res) => {
 
 }
 
+const uploadS3 = async (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ error: 'No file uploaded.' });
+    }
+
+    const folderName = req.body.folderName || 'defaultFolder';
+    const fileKey = `${folderName}/${v4()}-${req.file.originalname}`;
+    const mimeType = req.file.mimetype; 
+
+    const params = {
+        Bucket: process.env.AWS_BUCKET_NAME,
+        Key: fileKey,
+        ContentType: mimeType, 
+        Body: req.file.buffer
+    };
+
+    try {
+        await s3Client.send(new PutObjectCommand(params));
+        const fileUrl = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileKey}`;
+        res.status(200).json({ message: 'File uploaded successfully', url: fileUrl });
+    } catch (err) {
+        res.status(500).send({error: 'Error uploading file: ' + err.message});
+    }
+}
+
+const deleteS3 = async (req, res) => {
+    const { fileKey } = req.body;
+
+    if (!fileKey) {
+        return res.status(400).json({error: 'File key is required.'});
+    }
+
+    try {
+        const params = {
+            Bucket: process.env.AWS_BUCKET_NAME,
+            Key: fileKey,
+        };
+        await s3Client.send(new DeleteObjectCommand(params));
+        res.status(200).json({message: 'File deleted successfully'});
+    } catch (err) {
+        res.status(500).json({error: 'Error deleting file: ' + err.message});
+    }
+}
+
 module.exports = {
-    upload,
-    uploadFile,
-    deleteFile
+    uploadS3,
+    deleteS3,
+    uploadMemory,
+    uploadCloudinary,
+    uploadFileCloudinary,
+    deleteFileCloudinary
 }
