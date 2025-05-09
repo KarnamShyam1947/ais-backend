@@ -7,10 +7,14 @@ const cors = require("cors");
 const fs = require('fs');
 const mongoose = require("mongoose")
 
+const authRouter = require("./routers/AuthRouter");
 const uploadRouter = require("./routers/UploadRouter");
 const builderRouter = require("./routers/BuilderRouter");
 const propertyRouter = require("./routers/PropertyRouter");
+
 const { generateQuotePDF } = require('./lib/PDFUtils');
+
+const initializeDefaultAdmin = require("./lib/AuthUtils");
 
 require('dotenv').config();
 
@@ -222,15 +226,18 @@ app.get("/", (req, res) => {
     return res.status(200).json({ "status": "UP" })
 })
 
-app.use("/api/v1/upload", uploadRouter)
-app.use("/api/v1/builders", builderRouter)
-app.use("/api/v1/properties", propertyRouter)
+app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/upload", uploadRouter);
+app.use("/api/v1/builders", builderRouter);
+app.use("/api/v1/properties", propertyRouter);
 
 mongoose.connect(MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {
     console.log('✅ Connected to MongoDB');
+
+    initializeDefaultAdmin();
 
     app.listen(PORT, () => {
         console.log(`🚀 Server started on http://localhost:${PORT}`);
