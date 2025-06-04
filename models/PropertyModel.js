@@ -31,8 +31,11 @@ const propertySchema = new mongoose.Schema({
     type: [String],
     default: []
   },
-  image: {
+  email: {
     type: String
+  },
+  imageUrls: {
+    type: [String]  
   },
   description: {
     type: String

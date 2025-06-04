@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Contact Request - Attica Infra Services</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .email-wrapper {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .email-header {
+            background-color: #005D73;
+            padding: 20px;
+            border-radius: 8px 8px 0 0;
+            text-align: center;
+        }
+        .email-header img {
+            width: 120px;
+        }
+        .email-body {
+            padding: 20px;
+        }
+        .email-body h2 {
+            color: #005D73;
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+        .email-body p, .email-body li {
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .email-footer {
+            background-color: #005D73;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 0 0 8px 8px;
+            margin-top: 20px;
+        }
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .details-table th, .details-table td {
+            text-align: left;
+            padding: 8px;
+            border: 1px solid #ccc;
+        }
+        .details-table th {
+            background-color: #f0f0f0;
+            width: 30%;
+        }
+    </style>
+</head>
+<body>
+    <div class="email-wrapper">
+        <!-- Header -->
+        <div class="email-header">
+            <img src="https://res.cloudinary.com/ddm2qblsr/image/upload/v1744511093/full-removebg-preview_evknaa.png" alt="Attica Infra Services Logo">
+        </div>
+
+        <!-- Body -->
+        <div class="email-body">
+            <h2>New Contact Request Received</h2>
+            <p>You have received a new contact submission from the Attica Infra Services website. The details are as follows:</p>
+            
+            <table class="details-table">
+                <tr>
+                    <th>Name</th>
+                    <td>{{name}}</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>{{email}}</td>
+                </tr>
+                <tr>
+                    <th>Phone</th>
+                    <td>{{phone}}</td>
+                </tr>
+                <tr>
+                    <th>Address</th>
+                    <td>{{address}}</td>
+                </tr>
+                <tr>
+                    <th>reason</th>
+                    <td>{{from}}</td>
+                </tr>
+            </table>
+
+            <p>Please follow up with the user as needed.</p>
+        </div>
+
+        <!-- Footer -->
+        <div class="email-footer">
+            <p>&copy; 2025 Attica Infra Services. All rights reserved.</p>
+            <p>Attica Infra Services, City Name, Country.</p>
+        </div>
+    </div>
+</body>
+</html>
