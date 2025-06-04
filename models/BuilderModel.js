@@ -27,8 +27,11 @@ const builderSchema = new mongoose.Schema({
   pincode: {
     type: String
   },
-  imageUrl: {
+  email: {
     type: String
+  },
+  imageUrls: {
+    type: [String]  
   }
 }, {
   timestamps: true

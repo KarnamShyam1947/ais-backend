@@ -7,7 +7,7 @@ const verifyToken = (req, res, next) => {
     const token = req.cookies.authToken;
 
     if (!token) {
-        return res.status(403).json({ message: 'Access denied. No token provided.' });
+        return res.status(403).json({ error: 'Access denied. No token provided.' });
     }
 
     try {
@@ -16,7 +16,7 @@ const verifyToken = (req, res, next) => {
         req.user = decoded; 
         next();  
     } catch (err) {
-        return res.status(400).json({ message: 'Invalid token' });
+        return res.status(400).json({ error: 'Invalid token' });
     }
 };
 
