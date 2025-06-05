@@ -83,7 +83,7 @@ app.post('/submit-quote', async (req, res) => {
 
         await sendEmail({
             to: [`${process.env.ADMIN_EMAIL}`],
-            subject: `A new ${builders.length ? "Multiple" : ''} quote request from ${contactDetails.name}`,
+            subject: `A new ${builders && builders.length > 0 ? "Multiple" : ''} quote request from ${contactDetails.name}`,
             html: adminMailContent,
             attachments: [{
                 filename: fileName,
@@ -291,12 +291,13 @@ app.post("/submit-contact-details", async (req, res) => {
     const adminMailContent = getCompiledTemplate('contact-details.html', contactDetails);
 
     try {
-        await sendEmail({
+        const a = await sendEmail({
             to: [`${process.env.ADMIN_EMAIL}`],
             subject: `New Contact Request - ${contactDetails.name}`,
             html: adminMailContent,
         });
 
+        console.log(a);
         console.log('📧 Contact request emails sent successfully.');
         res.status(200).json({ message: 'Contact request submitted successfully' });
 
