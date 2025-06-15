@@ -8,7 +8,10 @@ const cookieParser = require('cookie-parser');
 const fs = require('fs');
 const mongoose = require("mongoose")
 
+const { createContact } = require("./controllers/ContactController"); 
+
 const authRouter = require("./routers/AuthRouter");
+const logsRouter = require("./routers/ContactRouter");
 const uploadRouter = require("./routers/UploadRouter");
 const builderRouter = require("./routers/BuilderRouter");
 const propertyRouter = require("./routers/PropertyRouter");
@@ -55,6 +58,9 @@ function getCompiledTemplate(templateName, replacements) {
 
 app.post('/submit-quote', async (req, res) => {
     const { contactDetails, quoteDetails, builders } = req.body;
+
+    contactDetails.service = `${builders && builders.length > 0 ? "Multiple" : 'Single'} quote request`;
+    await createContact(contactDetails);
 
     if (!contactDetails || !quoteDetails) {
         return res.status(400).json({ error: 'Contact details and quote details are required.' });
@@ -114,6 +120,9 @@ app.post('/submit-quote', async (req, res) => {
 app.post('/submit-material-order', async (req, res) => {
     const { groupedMaterials, contactDetails } = req.body;
 
+    contactDetails.service = `Material order request`;
+    await createContact(contactDetails);
+
     if (!contactDetails || !groupedMaterials || !Array.isArray(groupedMaterials)) {
         return res.status(400).json({ error: 'Contact details and grouped materials are required.' });
     }
@@ -170,6 +179,9 @@ app.post('/submit-material-order', async (req, res) => {
 app.post("/submit-architecture-design", async (req, res) => {
     const { contactDetails, mainData } = req.body;
 
+    contactDetails.service = `Architecture Design request`;
+    await createContact(contactDetails);
+
     if (!contactDetails || !mainData || !Array.isArray(mainData)) {
         return res.status(400).json({ error: 'Contact details and mainData are required.' });
     }
@@ -225,6 +237,9 @@ app.post("/submit-architecture-design", async (req, res) => {
 
 app.post("/submit-interior-design", async (req, res) => {
     const { contactDetails, designDetails } = req.body;
+
+    contactDetails.service = `Interior Design request`;
+    await createContact(contactDetails);
 
     if (!contactDetails || !designDetails) {
         return res.status(400).json({ error: 'Contact details and designDetails are required.' });
@@ -284,6 +299,10 @@ app.post("/submit-interior-design", async (req, res) => {
 app.post("/submit-contact-details", async (req, res) => {
     const contactDetails = req.body;
 
+    contactDetails.service = `Contact request`;
+    contactDetails.reason = contactDetails.form;
+    await createContact(contactDetails);
+
     if (!contactDetails) {
         return res.status(400).json({ error: 'Contact details are required.' });
     }
@@ -312,6 +331,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/logs", logsRouter);
 app.use("/api/v1/upload", uploadRouter);
 app.use("/api/v1/builders", builderRouter);
 app.use("/api/v1/properties", propertyRouter);

@@ -31,7 +31,7 @@ const login = async (req, res) => {
     );
 
 
-    res.cookie('authToken', token, { httpOnly: true, secure: false, maxAge: 3600000 });
+    res.cookie('authToken', token, { httpOnly: true, secure: true, maxAge: 3600000 });
     res.json({ message: 'Logged in successfully' });
 
 };
@@ -50,7 +50,7 @@ const verifyUser = async (req, res) => {
 const logout = (req, res) => {
     res.cookie('authToken', '', {
         httpOnly: true,
-        secure: false,
+        secure: true,
         maxAge: 0, 
     });
     res.status(200).json({ message: 'Logged out successfully' });
