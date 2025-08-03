@@ -8,6 +8,7 @@ const cookieParser = require('cookie-parser');
 const fs = require('fs');
 const mongoose = require("mongoose")
 
+const logRouter = require("./routers/LogRouter");
 const authRouter = require("./routers/AuthRouter");
 const uploadRouter = require("./routers/UploadRouter");
 const builderRouter = require("./routers/BuilderRouter");
@@ -21,6 +22,7 @@ const {
 } = require('./lib/PDFUtils');
 
 const initializeDefaultAdmin = require("./lib/AuthUtils");
+const { addLog } = require('./controllers/LogController');
 
 require('dotenv').config();
 
@@ -83,7 +85,7 @@ app.post('/submit-quote', async (req, res) => {
 
         await sendEmail({
             to: [`${process.env.ADMIN_EMAIL}`],
-            subject: `A new ${builders.length ? "Multiple" : ''} quote request from ${contactDetails.name}`,
+            subject: `A new ${builders && builders.length ? "Multiple" : ''} quote request from ${contactDetails.name}`,
             html: adminMailContent,
             attachments: [{
                 filename: fileName,
@@ -104,6 +106,8 @@ app.post('/submit-quote', async (req, res) => {
         });
 
         console.log('Emails sent successfully with in-memory PDF.');
+        addLog(contactDetails.name, contactDetails.email, contactDetails.phone, `Construction(${builders && builders.length ? "Multiple" : 'Single'}) Request`);
+
         res.status(200).json({ message: 'Emails sent successfully!' });
     } catch (error) {
         console.error('Error sending emails:', error);
@@ -159,6 +163,8 @@ app.post('/submit-material-order', async (req, res) => {
         });
 
         console.log('📧 Emails sent successfully.');
+        addLog(contactDetails.name, contactDetails.email, contactDetails.phone, "Material Order Request");
+
         res.status(200).json({ message: 'Material order submitted and emails sent!' });
 
     } catch (error) {
@@ -215,6 +221,8 @@ app.post("/submit-architecture-design", async (req, res) => {
         });
 
         console.log('📧 Architecture request emails sent successfully.');
+        addLog(contactDetails.name, contactDetails.email, contactDetails.phone, "Architecture Design Request");
+
         res.status(200).json({ message: 'Architecture request submitted and emails sent!' });
 
     } catch (error) {
@@ -273,6 +281,8 @@ app.post("/submit-interior-design", async (req, res) => {
         });
 
         console.log('📧 Interior request emails sent successfully.');
+        addLog(contactDetails.name, contactDetails.email, contactDetails.phone, "Interior Design Request");
+
         res.status(200).json({ message: 'Interior design request submitted and emails sent!' });
 
     } catch (error) {
@@ -298,6 +308,8 @@ app.post("/submit-contact-details", async (req, res) => {
         });
 
         console.log('📧 Contact request emails sent successfully.');
+        addLog(contactDetails.name, contactDetails.email, contactDetails.phone, "Contact Request");
+
         res.status(200).json({ message: 'Contact request submitted successfully' });
 
     } catch (error) {
@@ -310,6 +322,7 @@ app.get("/", (req, res) => {
     return res.status(200).json({ "status": "UP" })
 });
 
+app.use("/api/v1/logs", logRouter);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/upload", uploadRouter);
 app.use("/api/v1/builders", builderRouter);
